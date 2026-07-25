@@ -1,0 +1,21 @@
+# Planilhas de trabalho — o site só precisa do HTML e do sesap-data.js.
+# A base fica no seu PC; o que vai pro ar é o painel já com os dados dentro.
+*.xlsx
+*.xls
+*.xlsm
+
+# Backups locais do painel original
+*.BACKUP-*.html
+*.BACKUP-*.js
+
+# Restos de exportação do artifact original
+extracted/
+uploads/
+.thumbnail
+support.js
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
