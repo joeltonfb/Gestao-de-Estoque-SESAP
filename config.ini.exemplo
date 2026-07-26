@@ -1,0 +1,30 @@
+# =============================================================================
+# MODELO DE CONFIGURAÇÃO
+#
+# Copie este arquivo para "config.ini" e preencha os valores.
+# O config.ini NÃO vai para o Git (está no .gitignore) — a senha fica só na máquina.
+#
+#   Windows:  copy config.ini.exemplo config.ini
+#   Linux:    cp config.ini.exemplo config.ini
+#
+# Alternativa mais segura em servidor: em vez de preencher a senha aqui, defina
+# as variáveis de ambiente SIPAC_USUARIO e SIPAC_SENHA — elas têm prioridade
+# sobre este arquivo e não deixam a senha gravada em disco.
+# =============================================================================
+
+[sipac]
+# Login com permissão de leitura em Almoxarifado > Relatórios > Inventário.
+# Em servidor, prefira uma conta de serviço a um CPF pessoal.
+usuario =
+senha =
+
+[navegador]
+# true  = navegador invisível — OBRIGATÓRIO em servidor sem interface gráfica
+#         (Windows Server Core, Linux sem desktop)
+# false = abre a janela do Chrome na tela, útil para acompanhar/depurar
+headless = false
+
+[execucao]
+# true  = ao final, faz commit e push, atualizando o site publicado
+# false = só gera os arquivos localmente
+publicar = true

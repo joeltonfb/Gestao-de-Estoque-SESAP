@@ -24,13 +24,17 @@ from datetime import datetime
 import pandas as pd
 
 # ============================== CONFIG =========================================
-ARQ_MATRIZ   = r"C:\Users\User\Downloads\01_Inventario_Estoque\relatorio_inventario_CONSOLIDADO_MATRIZ.xlsx"
-ARQ_CATALOGO = r"C:\Users\User\Downloads\DASH ALMOXARIFE V1\BASE_DADOS_COMPLETA.xlsx"
-ARQ_SAIDA    = r"C:\Users\User\Downloads\DASH ALMOXARIFE V1\BASE_ESTOQUE.xlsx"
+# Caminhos e opções vêm de config.py — nada absoluto aqui, para a mesma pasta
+# funcionar no PC do usuário e no servidor sem edição.
+import config
 
-ABA_CATALOGO = "Materiais"          # aba do catálogo mestre
-ABA_SAIDA    = "Estoque"            # aba gerada (lida pelo dashboard)
-MANTER_ZERO  = False               # False = só Quantidade > 0 (snapshot de estoque)
+ARQ_MATRIZ   = config.ARQ_MATRIZ
+ARQ_CATALOGO = config.ARQ_CATALOGO
+ARQ_SAIDA    = config.ARQ_ESTOQUE
+
+ABA_CATALOGO = config.ABA_CATALOGO  # aba do catálogo mestre
+ABA_SAIDA    = config.ABA_ESTOQUE   # aba gerada (lida pelo dashboard)
+MANTER_ZERO  = False                # False = só Quantidade > 0 (snapshot de estoque)
 # ===============================================================================
 
 # Colunas do resultado final — ORDEM E NOMES FIXOS (nunca mudam entre extrações)
@@ -53,7 +57,7 @@ def log(msg=""):
 def carregar_matriz(caminho):
     """Lê a matriz raspada. Usa a 1ª aba se 'Inventario_Consolidado' não existir."""
     xls = pd.ExcelFile(caminho)
-    aba = "Inventario_Consolidado"
+    aba = config.ABA_MATRIZ
     if aba not in xls.sheet_names:
         aba = xls.sheet_names[0]
     df = pd.read_excel(caminho, sheet_name=aba, dtype=str)

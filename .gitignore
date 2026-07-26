@@ -1,14 +1,23 @@
-# Planilhas de trabalho — o site só precisa do HTML e do sesap-data.js.
-# A base fica no seu PC; o que vai pro ar é o painel já com os dados dentro.
-*.xlsx
-*.xls
-*.xlsm
+# Credenciais — nunca versionar
+config.ini
+
+# Planilhas geradas a cada execução (o site já leva os dados dentro do HTML)
+saida/
+
+# Planilhas soltas na raiz (restos da estrutura antiga)
+/*.xlsx
+/*.xls
+/*.xlsm
+
+# O catálogo mestre É versionado de propósito: é entrada fixa do programa,
+# e assim o servidor recebe tudo que precisa com um único "git clone".
+!dados/BASE_DADOS_COMPLETA.xlsx
 
 # Backups locais do painel original
 *.BACKUP-*.html
 *.BACKUP-*.js
 
-# Restos de exportação do artifact original
+# Restos da exportação original do artifact
 extracted/
 uploads/
 .thumbnail

@@ -32,13 +32,16 @@ import sys
 import pandas as pd
 
 # ============================== CONFIG =========================================
-PASTA        = os.path.dirname(os.path.abspath(__file__))
-ARQ_ESTOQUE  = os.path.join(PASTA, "BASE_ESTOQUE.xlsx")
-ARQ_NOMES    = os.path.join(PASTA, "nomes_almoxarifados.json")
-ARQ_DATA_JS  = os.path.join(PASTA, "sesap-data.js")
-ARQ_HTML     = os.path.join(PASTA, "index.html")  # index.html = URL limpa no GitHub Pages
+# Caminhos vêm de config.py — ver comentário lá sobre portabilidade.
+import config
 
-ABA_ESTOQUE  = "Estoque"
+PASTA        = config.RAIZ
+ARQ_ESTOQUE  = config.ARQ_ESTOQUE
+ARQ_NOMES    = config.ARQ_NOMES
+ARQ_DATA_JS  = config.ARQ_DATA_JS
+ARQ_HTML     = config.ARQ_HTML     # index.html = URL limpa no GitHub Pages
+
+ABA_ESTOQUE  = config.ABA_ESTOQUE
 # ===============================================================================
 
 RE_SIGLA = re.compile(r"^ALMOXARIFADO\s*", re.IGNORECASE)
