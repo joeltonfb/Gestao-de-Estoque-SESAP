@@ -108,14 +108,39 @@ def executar():
 
         # ---- descobre as unidades -----------------------------------------
         xpath_abrir_selecao   = '//*[@id="info-usuario"]/p[3]/a/img'
-        xpath_caixa_selecao   = '//*[@id="conteudo"]/form/table/tbody/tr/td[2]/select'
         xpath_voltar_relatorio = '//*[@id="relatorio-rodape"]/p/table/tbody/tr/td[1]/a'
 
-        print("Buscando unidades...")
-        click_insistente(xpath_abrir_selecao)
+        # Seletores por atributo em vez de posição: o XPath posicional depende da
+        # árvore de divs que o SIPAC monta, e quebra se ela mudar. O 'name' do campo
+        # faz parte do formulário e é estável.
+        CSS_CAIXA_SELECAO = 'select[name="usuarioUnidade.unidade.id"]'
+        CSS_BOTAO_ALTERAR = 'input[type="submit"][value="Alterar"]'
 
-        caixa = wait.until(EC.presence_of_element_located((By.XPATH, xpath_caixa_selecao)))
-        nomes_das_unidades = [opcao.text for opcao in Select(caixa).options]
+        def abrir_lista_de_unidades(tentativas=3):
+            """Abre a tela de troca de unidade e devolve os nomes disponíveis.
+
+            Este passo acontece antes do laço principal e, sem repetição, uma
+            lentidão momentânea do SIPAC derruba a execução inteira — foi o que
+            aconteceu em 18 e 19/08/2026. Cada nova tentativa volta ao portal e
+            refaz o caminho do zero.
+            """
+            for tentativa in range(1, tentativas + 1):
+                try:
+                    click_insistente(xpath_abrir_selecao)
+                    caixa = wait.until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, CSS_CAIXA_SELECAO))
+                    )
+                    return [opcao.text for opcao in Select(caixa).options]
+                except TimeoutException:
+                    print(f"  - SIPAC não respondeu (tentativa {tentativa} de {tentativas}).")
+                    if tentativa == tentativas:
+                        raise
+                    time.sleep(5)
+                    navegador.get(config.URL_SIPAC_PRINCIPAL)
+                    time.sleep(3)
+
+        print("Buscando unidades...")
+        nomes_das_unidades = abrir_lista_de_unidades()
         print(f"Encontradas {len(nomes_das_unidades)} unidades.")
 
         dados_por_unidade = {}
@@ -131,11 +156,11 @@ def executar():
                 print("-" * 30)
                 print(f"Processando: {unidade_atual}")
 
-                caixa = wait.until(EC.presence_of_element_located((By.XPATH, xpath_caixa_selecao)))
+                caixa = wait.until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, CSS_CAIXA_SELECAO))
+                )
                 Select(caixa).select_by_index(i)
-                navegador.find_element(
-                    By.XPATH, '//*[@id="conteudo"]/form/table/tfoot/tr/td/input[2]'
-                ).click()
+                navegador.find_element(By.CSS_SELECTOR, CSS_BOTAO_ALTERAR).click()
 
                 # Menu lateral: Módulos -> Almoxarifado -> Consultas -> Relatório de Inventário
                 click_insistente('//*[@id="show-modulos-sipac"]')
