@@ -75,6 +75,13 @@ URL_SIPAC_PRINCIPAL = "https://sipac.rn.gov.br/sipac/portal/principal.jsf"
 HEADLESS  = _booleano("navegador", "headless", padrao=False)
 PUBLICAR  = _booleano("execucao", "publicar", padrao=True)
 
+# Aceitar certificado HTTPS inválido/vencido do SIPAC.
+# Em 23/08/2026 o certificado deles expirou e o Chrome passou a bloquear a página,
+# derrubando o robô. Ligar isto contorna o bloqueio, MAS desativa a verificação que
+# protege a conexão contra interceptação — mantenha desligado sempre que o
+# certificado do SIPAC estiver válido.
+IGNORAR_CERTIFICADO = _booleano("navegador", "ignorar_certificado", padrao=False)
+
 
 def validar_credenciais():
     """Falha cedo e com mensagem clara se o login não foi configurado."""

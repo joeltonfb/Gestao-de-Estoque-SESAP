@@ -59,6 +59,12 @@ def montar_navegador():
     opcoes.add_argument("--disable-gpu")
     opcoes.add_argument("--window-size=1920,1080")
 
+    if config.IGNORAR_CERTIFICADO:
+        # Só para contornar certificado vencido do lado do SIPAC — ver config.py
+        print("    AVISO: verificação de certificado HTTPS desativada.")
+        opcoes.set_capability("acceptInsecureCerts", True)
+        opcoes.add_argument("--ignore-certificate-errors")
+
     servico = ChromeService(ChromeDriverManager().install())
     return webdriver.Chrome(service=servico, options=opcoes)
 

@@ -24,6 +24,12 @@ senha =
 # false = abre a janela do Chrome na tela, útil para acompanhar/depurar
 headless = false
 
+# Aceitar certificado HTTPS vencido do SIPAC.
+# Deixe false. Ligue APENAS quando o certificado deles estiver expirado e o robô
+# não conseguir abrir a página — e desligue assim que renovarem, pois isto
+# desativa a proteção contra interceptação da conexão.
+ignorar_certificado = false
+
 [execucao]
 # true  = ao final, faz commit e push, atualizando o site publicado
 # false = só gera os arquivos localmente
