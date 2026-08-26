@@ -215,6 +215,25 @@ def executar():
                     break  # nem a recuperação funcionou: para para não entrar em laço
                 continue
 
+        # ---- verificação de integridade da coleta --------------------------
+        # Em 26/08/2026 o Chrome travou na 44ª de 56 unidades; o script consolidou
+        # os dados parciais e publicou como se estivessem completos — o painel
+        # mostrou 33 almoxarifados e uma queda de 20% no estoque que não existiu.
+        # Melhor não atualizar nada do que publicar um retrato falso da rede.
+        esperadas = len([u for u in nomes_das_unidades if "SUBSECRETARIA" not in u.upper()])
+        coletadas = len(dados_por_unidade)
+        minimo_aceitavel = int(esperadas * 0.95)
+
+        print()
+        print(f"Unidades coletadas: {coletadas} de {esperadas} esperadas.")
+        if coletadas < minimo_aceitavel:
+            raise SystemExit(
+                f"[ERRO] Coleta incompleta: {coletadas} de {esperadas} unidades "
+                f"(minimo aceitavel: {minimo_aceitavel}). "
+                f"A matriz NAO foi gravada e o painel NAO sera publicado, para nao "
+                f"substituir os dados bons por um retrato parcial da rede. "
+                f"Verifique o log acima e rode de novo."
+            )
         # ---- consolida em matriz ------------------------------------------
         if not dados_por_unidade:
             raise SystemExit("\n[ERRO] Nenhuma unidade foi extraída — nada a consolidar.")
