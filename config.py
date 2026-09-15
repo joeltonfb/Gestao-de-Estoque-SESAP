@@ -34,7 +34,7 @@ ARQ_ESTOQUE   = os.path.join(PASTA_SAIDA, "BASE_ESTOQUE.xlsx")
 ARQ_CATALOGO  = os.path.join(PASTA_DADOS, "BASE_DADOS_COMPLETA.xlsx")
 ARQ_NOMES     = os.path.join(RAIZ, "nomes_almoxarifados.json")
 ARQ_DATA_JS   = os.path.join(RAIZ, "sesap-data.js")
-ARQ_HTML      = os.path.join(RAIZ, "index.html")
+ARQ_HTML      = os.path.join(RAIZ, "painel.html")  # index.html só redireciona para o hub da SESAP
 
 ABA_CATALOGO  = "Materiais"
 ABA_ESTOQUE   = "Estoque"

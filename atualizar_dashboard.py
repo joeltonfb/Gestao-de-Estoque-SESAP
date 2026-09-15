@@ -39,7 +39,7 @@ PASTA        = config.RAIZ
 ARQ_ESTOQUE  = config.ARQ_ESTOQUE
 ARQ_NOMES    = config.ARQ_NOMES
 ARQ_DATA_JS  = config.ARQ_DATA_JS
-ARQ_HTML     = config.ARQ_HTML     # index.html = URL limpa no GitHub Pages
+ARQ_HTML     = config.ARQ_HTML     # painel.html (o index.html redireciona para o hub)
 
 ABA_ESTOQUE  = config.ABA_ESTOQUE
 # ===============================================================================

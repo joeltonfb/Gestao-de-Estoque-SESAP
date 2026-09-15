@@ -176,7 +176,8 @@ Gestao-de-Estoque-SESAP/
 ├── gerar_base_estoque.py       ← etapa 2: matriz → base tratada
 ├── atualizar_dashboard.py      ← etapa 3: base → painel → publicação
 ├── nomes_almoxarifados.json    ← nomes amigáveis das unidades
-├── index.html                  ← o painel publicado
+├── index.html                  ← redireciona para o hub de dashboards da SESAP
+├── painel.html                 ← o painel de estoques publicado
 ├── sesap-data.js               ← dados do painel
 ├── dados/
 │   └── BASE_DADOS_COMPLETA.xlsx  ← catálogo mestre de materiais
