@@ -47,6 +47,15 @@ ABA_ESTOQUE  = config.ABA_ESTOQUE
 RE_SIGLA = re.compile(r"^ALMOXARIFADO\s*", re.IGNORECASE)
 
 
+def vazio_para(valor, padrao):
+    """str() de um NaN do pandas devolve "nan", que o painel exibiria como texto.
+    Esta função trata nulo, vazio e "nan" como ausência de valor."""
+    texto = "" if valor is None else str(valor).strip()
+    if texto.lower() in ("", "nan", "none", "<na>"):
+        return padrao
+    return texto
+
+
 def log(msg=""):
     print(msg, flush=True)
 
@@ -102,11 +111,18 @@ def gerar_data_js():
     log(f"[2] Almoxarifados: {len(alms)}")
 
     # ---- dicionário de grupos ----------------------------------------------
+    # O painel rotula a barra com grupos[codigo]. Se o catálogo não traz a
+    # denominação, o str() de um NaN virava o texto "nan" e aparecia como se
+    # fosse o nome do grupo. Aqui o nome ausente é dito com todas as letras.
+    SEM_GRUPO = "SEM_GRUPO"
     grupos = {}
     for cod, den in df[["GrupoCodigo", "GrupoDenominacao"]].drop_duplicates().values.tolist():
-        cod = str(cod).strip()
-        if cod and cod.lower() != "nan":
-            grupos[cod] = str(den).strip()
+        cod = vazio_para(cod, "")
+        if not cod:
+            continue
+        nome = vazio_para(den, "")
+        grupos[cod] = nome or f"Grupo {cod} (sem denominação no catálogo)"
+    grupos[SEM_GRUPO] = "Sem grupo cadastrado"
     grupos = dict(sorted(grupos.items()))
     log(f"[3] Grupos: {len(grupos)}")
 
@@ -127,7 +143,7 @@ def gerar_data_js():
             "cd": str(codigo_mat).strip(),
             "nm": str(primeira["Denominacao"]).strip(),
             "un": str(primeira["UnidadeMedida"]).strip(),
-            "g":  str(primeira["GrupoCodigo"]).strip(),
+            "g":  vazio_para(primeira["GrupoCodigo"], SEM_GRUPO),
             "q":  q,
         })
     itens.sort(key=lambda it: (it["g"], it["nm"]))
